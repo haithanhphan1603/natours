@@ -1,5 +1,5 @@
 const Tour = require('../model/tourModel');
-
+const APIFeatures = require('../utils/apiFeatures');
 // exports.checkBody = (req, res, next) => {
 //   if (!req.body.name || !req.body.price) {
 //     return res.status(404).json({ status: 'Fail', message: 'Bad request' });
@@ -7,9 +7,22 @@ const Tour = require('../model/tourModel');
 //   next();
 // };
 
+exports.aliasTopTours = (req, res, next) => {
+  req.query.limit = '5';
+  req.query.sort = '-ratingsAverage,price';
+  req.query.fields = 'name,price,ratingsAverage,summary,difficulty';
+  next();
+};
+
 exports.getAllTours = async (req, res) => {
   try {
-    const tours = await Tour.find();
+    const features = new APIFeatures(Tour.find(), req.query)
+      .filter()
+      .sort()
+      .limitFields()
+      .paginate();
+    const tours = await features.query;
+
     res.status(200).json({
       status: 'Success',
       results: tours.length,
@@ -17,7 +30,17 @@ exports.getAllTours = async (req, res) => {
         tours,
       },
     });
-  } catch (err) {}
+  } catch (err) {
+    res.status(400).json({
+      status: 'Fail',
+      message: err,
+    });
+  }
+  // const tours = await Tour.find()
+  //   .where('duration')
+  //   .equals(5)
+  //   .where('difficulty')
+  //   .equals('easy');
 };
 
 exports.getTour = async (req, res) => {

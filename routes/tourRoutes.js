@@ -7,9 +7,10 @@ const {
   getTour,
   updateTour,
   deleteTour,
-  checkBody,
+  aliasTopTours,
 } = require('../controller/tourController');
 
+router.route('/top-five-cheap').get(aliasTopTours, getAllTours);
 router.route('/').get(getAllTours).post(createTour);
 router.route('/:id').get(getTour).patch(updateTour).delete(deleteTour);
 module.exports = router;
