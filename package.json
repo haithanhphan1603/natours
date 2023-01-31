@@ -6,6 +6,7 @@
   "scripts": {
     "start:dev": "nodemon server.js",
     "start:prod": "NODE_ENV=production nodemon server.js",
+    "debug":"ndb server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Hai Phan",
@@ -14,6 +15,8 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongoose": "^5.13.15",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "slugify": "^1.6.5",
+    "validator": "^13.7.0"
   }
 }
